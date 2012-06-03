@@ -1,6 +1,7 @@
 #HTML5 Game Fundamentals
 
-A creative-commons book on building games with HTML5, JavaScript, and CSS.
+A creative-commons book on building games with HTML5, JavaScript, and CSS.<br>
+Jason Kadrmas @itooamaneatguy
 
 ## Table Of Contents
 
@@ -8,20 +9,21 @@ A creative-commons book on building games with HTML5, JavaScript, and CSS.
 * [The Basics](#thebasics)
 	* [DOM](#thebasics-dom)
 	* [Canvas](#thebasics-canvas)
-	* [Game Assets](#thebasics-assets)
-	* [Game Loop](#thebasics-gameloop)
+	* [Choosing Assets](#thebasics-assets)
+* [Game Concepts](#concepts)	
+	* [Game Loop](#concepts-gameloop)
 		* requestAnimationFrame
 		* cancelAnimationFrame
-	* [Grid System](#thebasics-grid)
-* [Animation](#animation)	
-    * [DOM Animation](#animation-dom)
-    	* Transitions
-    	* Translations
-	* [Canvas Animation](#animation-canvas)
-	* [Sprite Sheets](#animation-sprite-sheets)
-		* Blitting
-		* DOM
-		* Canvas
+	* [Grid System](#concepts-grid)
+	* [Animation](#animation)	
+	    * [DOM Animation](#concepts-animation-dom)
+	    	* Transitions
+	    	* Translations
+		* [Canvas Animation](#concepts-animation-canvas)
+		* [Sprite Sheets](#concepts-animation-sprite-sheets)
+			* Blitting
+			* DOM
+			* Canvas
 * [Saving Data](#saving)
 * [WebGL](#webgl)	
 * [PhoneGap](#phonegap)
@@ -107,7 +109,7 @@ var imgData = ctx.getImageData( 0, 0, 1, 1 );
 ### Canvas Resources
 The canvas element has entire books dedicated to covering it in complete detail. There are a bunch of features to canvas that are not covered here.  The list includes drawing text, gradients, complex shapes, paths, transforms, etc.  For more information on canvas check out this [CanvasDeepDive](http://projects.joshy.org/presentations/HTML/CanvasDeepDive/presentation.html) presentation which covers canvas in pretty good detail.
 
-## Game Assets
+### <a name="thebasics-assets">Choosing Assets</a>
 When developing a game, choosing assets can become very important.  These choices not only affect performance, but they can also influence how long it will take to develop a game.  For example, if you choose to make a canvas based game it might make sense to create the menu screens using DOM elements instead of trying to layout and draw each item onto a canvas.  
 
 ### Images
@@ -178,4 +180,9 @@ Our buttons were also created and styled entirely in CSS.  The buttons have a su
 Looking at the different CSS code above, the first thing one might notice is that there is quite a bit of repetitiveness for each vendor prefix.   If you are using CSS to style your menu or other game screens, do yourself a favor and use a CSS preprocessor.    There are many excellent preprocessors out there including [SASS]( http://sass-lang.com/), [LESS]( http://lesscss.org/), [Stylus]( http://learnboost.github.com/stylus/), etc.  A preprocessor will easily cut down game development time and will allow your game to become more maintainable as it becomes more complicated. 
 
 ### SVG
+Coming soon
+
+## <a name="thebasics">Game Concepts</a>
+### <a name="thebasics-gameloop">Game Loop</a>
+
 
