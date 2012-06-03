@@ -8,26 +8,28 @@ A creative-commons book on building games with HTML5, JavaScript, and CSS.
 * [The Basics](#thebasics)
 	* [DOM](#thebasics-dom)
 	* [Canvas](#thebasics-canvas)
-	* [Choosing Assets](#thebasics-assets)
+	* [Game Assets](#thebasics-assets)
 	* [Game Loop](#thebasics-gameloop)
 		* requestAnimationFrame
 		* cancelAnimationFrame
 	* [Grid System](#thebasics-grid)
 * [Animation](#animation)	
     * [DOM Animation](#animation-dom)
+    	* Transitions
+    	* Translations
 	* [Canvas Animation](#animation-canvas)
-		* Blitting
 	* [Sprite Sheets](#animation-sprite-sheets)
+		* Blitting
 		* DOM
 		* Canvas
+* [Saving Data](#saving)
 * [WebGL](#webgl)	
 * [PhoneGap](#phonegap)
 * [Automation](#automation)
 * [Debugging](#debugging)
 * [Multiplayer](#multiplayer)
 
-<a name="introduction">Introduction</a>
----
+## <a name="introduction">Introduction</a>
 Games have always been a part of society, capturing ideas and behaviors of people and becoming an extension of their imagination and creativity.  Dice games, tile games, and card games all date back to ancient times, with dice games dating as far back as 3000 years.  Today's games still spark those same human interactions.  Although the same principles apply to today's games, the medium has changed dramatically. Now days there many options when creating a game. Almost all older games have an online counterpart and due to the popularity of app stores, games have become even easier to market and distribute.  The question then arises, what technology should I use to build my game?
 
 Web games until very recently were almost exclusively built on platforms using browser plugins.  Adobe Flash was king with other plugins like Unity filling out the market. With almost unbelievable performance updates to JavaScript engines, the emergence of bitmap drawing via canvas, and powerful new CSS3 features, the dream of building an entire game without plugins is becoming a reality.  Building a game exclusively using web technologies presents a set of challenges, however, the landscape is changing at an alarming pace.  New specs and API's seem to be coming out on a daily basis, and browser vendors are aggressively implementing these new features.  It is an exciting time to be a creative JavaScript developer!
@@ -35,7 +37,6 @@ Web games until very recently were almost exclusively built on platforms using b
 The aim of this book is to highlight some common gaming practices and how those practices can relate when building a game with HTML5, JavaScript, and CSS.
 
 ## <a name="thebasics">The Basics</a>
----
 Like any detailed subject, gaming has some basic principles that can be useful when getting started.  HTML5 games in particular have a few different options and depending on what you choose, they have very different possibilities and limitations.
 
 ### <a name="thebasics-dom">DOM</a>
@@ -106,5 +107,74 @@ var imgData = ctx.getImageData( 0, 0, 1, 1 );
 ### Canvas Resources
 The canvas element has entire books dedicated to covering it in complete detail. There are a bunch of features to canvas that are not covered here.  The list includes drawing text, gradients, complex shapes, paths, transforms, etc.  For more information on canvas check out this [CanvasDeepDive](http://projects.joshy.org/presentations/HTML/CanvasDeepDive/presentation.html) presentation which covers canvas in pretty good detail.
 
-## Choosing Assets
-Coming Soon
+## Game Assets
+When developing a game, choosing assets can become very important.  These choices not only affect performance, but they can also influence how long it will take to develop a game.  For example, if you choose to make a canvas based game it might make sense to create the menu screens using DOM elements instead of trying to layout and draw each item onto a canvas.  
+
+### Images
+Images play an important role in any game.  Images convey a level of detail that could not be achieved easily using CSS, SVG, or canvas rendering.  As we will see later, for many types of animation, sequenced images or “sprite sheets” are used quite frequently.  So when should an image be used?  There are no hard and fast rules, but whenever there is a lot of detail or a complicated animation sequence, images tend to be the best option.
+
+### CSS
+With the emergence of CSS3 game developers have quite a few more options when styling and producing game elements.  Transforms and transitions can position and animation your content, while @font-face can give your game snappy new typography.  Using only CSS it is easily possible to create a simple menu screen like Fig 2.
+
+![center](http://client.kadrmasconcepts.com/blog_examples/html5-game-fundamentals/game-menu.png)
+
+Fig 2
+
+This may look like a very simple menu interface.  However, since no images are being used, there are quite a few CSS techniques going on that are worth noting.
+
+#### @font-face
+The first feature to point out is the header.  It has been styled with a custom type face.  Although not a CSS3 feature, @font-face finally allows a cross-browser way to embed typography within our open games.  In the example below, we are using a font from [font squirrel](http://www.fontsquirrel.com) called "Chunk Five" for all of the header tags.  Note: some @font-face kits are starting to leave out the svg option.  Be sure to add it if you are targeting iOS 4.1 and lower as they can only render @font-face with svg.  Newer versions of iOS have support for the truetype format.
+
+```css
+@font-face {
+    font-family: 'ChunkFiveRegular';
+    src:
+    	url('Chunkfive-webfont.eot?#') format('eot'),  /* IE6–8 */ 
+    	url('type/Chunkfive-webfont.ttf') format('truetype'), /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+    	url('Chunkfive-webfont.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    	url('type/Chunkfive-webfont.svg#ChunkFiveRegular') format('svg');
+       
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'ChunkFiveRegular';
+}
+```
+
+#### CSS Gradients
+Next up on our simple menu screen is the background.  The background was created with a simple CSS radial gradient.  No longer do you have to export gradient image slices from Photoshop to create simple backgrounds.
+
+```css
+background: -moz-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%, rgba(28,30,32,1) 100%);
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(85,90,95,1)), color-stop(100%,rgba(28,30,32,1)));
+background: -webkit-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+background: -o-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+background: -ms-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+background: radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+ ```
+
+#### CSS Shadows
+Our buttons were also created and styled entirely in CSS.  The buttons have a subtle blue linear gradient applied and an ever so slight shadow.  Below is an example of the shadow.
+
+```css
+.button {
+  
+  font-family: 'OpenSans ExtraBold';
+  
+  background-image: -moz-linear-gradient(top, #6dccf4, #0071a0);
+  background-image: -o-linear-gradient(top, #6dccf4, #0071a0);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #6dccf4),color-stop(1, #0071a0));
+  
+  box-shadow: 0px 0px 2px #000;
+  -moz-box-shadow: 0px 0px 2px #000;
+  -webkit-box-shadow: 0px 0px 2px #000;
+  -o-box-shadow: 0px 0px 2px #000;
+}
+
+#### Preprocessors
+Looking at the different CSS code above, the first thing one might notice is that there is quite a bit of repetitiveness for each vendor prefix.   If you are using CSS to style your menu or other game screens, do yourself a favor and use a CSS preprocessor.    There are many excellent preprocessors out there including [SASS]( http://sass-lang.com/), [LESS]( http://lesscss.org/), [Stylus]( http://learnboost.github.com/stylus/), etc.  A preprocessor will easily cut down game development time and will allow your game to become more maintainable as it becomes more complicated. 
+
+### SVG
+
