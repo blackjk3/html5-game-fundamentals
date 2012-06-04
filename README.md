@@ -184,5 +184,71 @@ Coming soon
 
 ## <a name="thebasics">Game Concepts</a>
 ### <a name="thebasics-gameloop">Game Loop</a>
+The central component of most games revolves around a game loop.  A game loop can be thought of as the main hub that controls actions within a game.  Upon each tick of the loop, the game may be asked to perform multiple tasks.  These tasks can range from updating and drawing new character positions on the screen to performing collision detection between objects.  
+
+#### Request Animation Frame (rAF)
+In order to create a game loop using JavaScript we can use an API (requestAnimationFrame) to inform the browser that we would like to do some animation.  We are going to request an animiation frame.  After the browser gives us the animation frame it will call the provided callback function.  From this function we can request another frame, thus creating a game loop.  In the example below there is a cross browser shim for rAF, plus an animate() function that will serve as the game loop.  Notice that within the animate function is a requestAnimationFrame call and animate iself is passed in as the callback.  Thus, creating a game loop.  The game loop will then check any collisions within the game, and finally it will render out the new positions of the game elements.
+
+```javascript
+
+// Request Animation Frame Shim.  Will setup multiple prefixes, plus
+// fallback support for browsers that do not support rAF.
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame =
+          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+
+// End Shim
 
 
+// Fire off our game loop
+function animate() {
+  requestAnimationFrame( animate );
+  
+  checkCollisions();
+  render();
+}
+
+```
+
+#### Cancel Animation Frame
+Now that we know how to start a game loop, we should figure out how to stop it.  You probably will need to turn the game loop on and off for many different reasons.  When a quits gameplay and wants to move back to the menu screen it doesn't really make sense to keep a game loop running.  That would just waste cpu cycles and possibly battery life.  To cancel a request for an animation frame we can use the cancelAnimationFrame method.  cancelAnimationFrame() requires the frame id to cancel.  We can modify animate function from the previous example to store the frame id.  Now that we have the id it is as simple as passing it to cancelAnimationFrame().
+
+ ```javascript
+
+var frameId;
+
+// Fire off our game loop
+function animate() {
+  frameId = requestAnimationFrame( animate );
+  
+  checkCollisions();
+  render();
+}
+
+// Cancel our game loop
+function cancel() {
+  cancelAnimationFrame( frameId );
+}
+
+ ```
