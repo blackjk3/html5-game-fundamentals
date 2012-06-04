@@ -239,7 +239,7 @@ function animate() {
 
 ```
 
-#### <a name="concepts-raf">Cancel Animation Frame</a>
+#### <a name="concepts-caf">Cancel Animation Frame</a>
 Now that we know how to start a game loop, we should figure out how to stop it.  You probably will need to turn the game loop on and off for many different reasons.  For example, when a user quits gameplay and wants to move back to the menu screen it doesn't really make sense to keep a game loop running.  That would just be a waste of cpu cycles and possibly battery life.  To cancel a request for an animation frame we can use the cancelAnimationFrame method.  cancelAnimationFrame() requires the frame id we want to cancel to be passed in.  We can easily modify the animate function from the previous example to store the frame id.  Now that we have the id it is as simple as passing it to cancelAnimationFrame().
 
  ```javascript
