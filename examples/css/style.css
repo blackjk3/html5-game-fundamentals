@@ -1,0 +1,489 @@
+/* HTML5 ✰ Boilerplate
+ * ==|== normalize ==========================================================
+ */
+footer,
+header,
+section {
+  display: block;
+}
+canvas,
+video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+html {
+  overflow-y: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.231;
+}
+body,
+button,
+input,
+select,
+textarea {
+  font-family: sans-serif;
+  color: #222;
+}
+/* =============================================================================
+   Links
+   ========================================================================== */
+a {
+  color: #00e;
+}
+a:visited {
+  color: #551a8b;
+}
+a:hover {
+  color: #06e;
+}
+a:focus {
+  outline: thin dotted;
+}
+/* Improve readability when focused and hovered in all browsers: h5bp.com/h */
+a:hover,
+a:active {
+  outline: 0;
+}
+/* =============================================================================
+   Lists
+   ========================================================================== */
+ul,
+ol {
+  margin: 1em 0;
+  padding: 0 0 0 40px;
+}
+dd {
+  margin: 0 0 0 40px;
+}
+nav ul,
+nav ol {
+  list-style: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+}
+/* =============================================================================
+   Embedded content
+   ========================================================================== */
+/*
+ * 1. Improve image quality when scaled in IE7: h5bp.com/d
+ * 2. Remove the gap between images and borders on image containers: h5bp.com/e
+ */
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+  vertical-align: middle;
+}
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+button,
+input {
+  line-height: normal;
+  *overflow: visible;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+}
+input:invalid,
+textarea:invalid {
+  background-color: #f0dddd;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td {
+  vertical-align: top;
+}
+/* ==|== primary styles =====================================================
+   Author:  Jason Kadrmas @itooamaneatguy
+   Company: KadrmasConcepts LLC
+   ========================================================================== */
+@font-face {
+  font-family: "OpenSans ExtraBold";
+  src: url('type/OpenSans-ExtraBold.ttf') format('truetype'), url('type/OpenSans-ExtraBold.svg#OpenSansExtrabold') format('svg');
+}
+@font-face {
+  font-family: "OpenSans";
+  src: url('type/OpenSans-Regular.ttf') format('truetype'), url('type/OpenSans-Regular.svg#OpenSansRegular') format('svg');
+}
+@font-face {
+  font-family: 'ChunkFiveRegular';
+  src: url('type/Chunkfive-webfont.ttf') format('truetype'), url('type/Chunkfive-webfont.svg#ChunkFiveRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+html,
+body {
+  height: 100%;
+}
+header,
+footer,
+article,
+div,
+span,
+a {
+  -webkit-backface-visibility: hidden;
+  -webkit-touch-callout: none;
+}
+body.stage {
+  -webkit-user-select: none;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  /* Stage header */
+
+  /* Stage article */
+
+  /* All scene headers */
+
+}
+body.stage  > header {
+  position: absolute;
+  background: #191919;
+}
+body.stage  > article {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+body.stage footer {
+  background: #191919;
+  width: 100%;
+  height: 40px;
+  bottom: 0;
+}
+body.stage header {
+  width: 100%;
+  height: 40px;
+}
+body.stage .viewport {
+  position: relative;
+}
+body {
+  margin: 2.0em 0;
+  text-align: center;
+  font-family: 'OpenSans';
+  overflow-y: hidden;
+  background: #1c1e20;
+  background: -moz-radial-gradient(center, ellipse cover, #555a5f 0%, #1c1e20 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #555a5f), color-stop(100%, #1c1e20));
+  background: -webkit-radial-gradient(center, ellipse cover, #555a5f 0%, #1c1e20 100%);
+  background: -o-radial-gradient(center, ellipse cover, #555a5f 0%, #1c1e20 100%);
+  background: -ms-radial-gradient(center, ellipse cover, #555a5f 0%, #1c1e20 100%);
+  background: radial-gradient(center, ellipse cover, #555a5f 0%, #1c1e20 100%);
+}
+h1 {
+  font-size: 2.5em;
+}
+h1,
+h2,
+h3,
+h4 {
+  color: #fff;
+  font-family: 'ChunkFiveRegular';
+}
+h4 {
+  font-family: 'ChunkFiveRegular';
+  font-size: 2.0em;
+  margin: 0;
+  padding: 0.5em 0 0 0;
+  color: #555;
+  text-shadow: 1px 1px 0px #eee, 3px 3px 0px #707070;
+}
+.scene {
+  position: absolute;
+}
+.scene header {
+  color: #EEE;
+  text-align: center;
+}
+.scene header h3 {
+  margin: 0;
+  padding: 0.3em 0 0 0;
+  font-size: 2.0em;
+  text-shadow: 0px 2px 3px #666;
+}
+.element {
+  position: absolute;
+}
+#main {
+  width: 100%;
+}
+#main a {
+  margin: 1.0em auto;
+  display: block;
+  width: 70%;
+  text-align: center;
+  padding: 2.0em 0 2.0em 0;
+}
+#help {
+  width: 100%;
+}
+#help article {
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+}
+#help article h4 {
+  color: #6dccf4;
+}
+#help article p {
+  color: #fff;
+}
+#help article .help-img {
+  width: 100%;
+  margin-top: 0.2em;
+}
+#play {
+  width: 100%;
+}
+#play h3.info {
+  font-family: 'ChunkFiveRegular';
+  font-size: 3.0em;
+  color: #555;
+  text-shadow: 1px 1px 0px #eee, 3px 3px 0px #707070;
+}
+#play .infowheel {
+  background: #fff;
+  z-index: 2;
+}
+#play .currentcolor {
+  display: none;
+  z-index: 3;
+}
+#play .secondcolor {
+  display: none;
+}
+#play .colorbox {
+  /*display: none;*/
+
+  z-index: 4;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+}
+#play h5.status {
+  margin: 0;
+  padding: 0;
+  display: none;
+  position: absolute;
+  text-align: center;
+  font-family: 'ChunkFiveRegular';
+  font-size: 1.5em;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  z-index: 6;
+  width: 100%;
+}
+#play .cscale {
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+}
+#play .infostart {
+  text-align: center;
+  margin: 0 auto;
+}
+#play .infostart h4 {
+  font-family: 'ChunkFiveRegular';
+  font-size: 2.4em;
+  margin: 0;
+  padding: 0;
+  color: #555;
+  text-shadow: 1px 1px 0px #eee, 3px 3px 0px #707070;
+}
+#play .infostart .button {
+  width: 3.5em;
+  text-align: center;
+  padding: 0.7em;
+  margin: 0 auto;
+}
+#play .marker,
+#play .anti-marker {
+  /*display: none;*/
+
+  position: absolute;
+  z-index: 3;
+}
+#play .wheelcontainer {
+  position: absolute;
+  z-index: 2;
+  line-height: 0;
+}
+footer {
+  overflow: hidden;
+}
+footer #footer-container {
+  position: absolute;
+  z-index: 8;
+  -webkit-transform: translate(0px, 45px);
+  -webkit-tranform: translatez(0);
+  background: #191919;
+  height: 3.0em;
+  width: 100%;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+}
+footer #footer-container .score {
+  float: left;
+  padding: 0.2em 0 0 0.2em;
+  color: #fff;
+  font-family: 'ChunkFiveRegular';
+  font-size: 2.3em;
+}
+footer #footer-container .rounds {
+  float: right;
+  margin: 0;
+  padding: 1.0em 0 0 0;
+}
+footer #footer-container .rounds li {
+  list-style: none;
+  float: left;
+  margin: 0 0.6em 0 0;
+  width: 1.3em;
+  height: 1.3em;
+  border: 3px solid #fff;
+  color: #fff;
+  -webkit-border-radius: 1.3em;
+  -moz-border-radius: 1.3em;
+  border-radius: 1.3em;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+footer #footer-container .rounds li.active {
+  background-color: #0071A0;
+  background-image: -moz-linear-gradient(top, #6dccf4, #0071a0);
+  background-image: -o-linear-gradient(top, #6dccf4, #0071a0);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #6dccf4), color-stop(1, #0071a0));
+}
+.gamescreen {
+  display: none;
+}
+.center {
+  text-align: center;
+  margin: 0 auto;
+}
+.button {
+  font-size: 1.0em;
+  font-family: 'OpenSans ExtraBold';
+  padding: 0 1.5em;
+  margin: 0.5em;
+  color: #fff;
+  /*width:2.0em;*/
+
+  background-color: #0071A0;
+  background-image: -moz-linear-gradient(top, #6dccf4, #0071a0);
+  background-image: -o-linear-gradient(top, #6dccf4, #0071a0);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #6dccf4), color-stop(1, #0071a0));
+  box-shadow: 0px 0px 2px #000;
+  -moz-box-shadow: 0px 0px 2px #000;
+  -webkit-box-shadow: 0px 0px 2px #000;
+  -o-box-shadow: 0px 0px 2px #000;
+}
+.back {
+  display: block;
+  float: left;
+  position: absolute;
+  margin: 0.3em 0 0 0.3em;
+  padding: 0.7em;
+  border-radius: 5px;
+}
+a.button {
+  color: #fff;
+  text-decoration: none;
+}
+/* ==|== non-semantic helper classes ======================================== */
+.ir {
+  border: 0;
+  font: 0/0 a;
+  text-shadow: none;
+  color: transparent;
+  background-color: transparent;
+}
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+}
+.invisible {
+  visibility: hidden;
+}
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+/* ==|== media queries ====================================================== */
+/* Landscape phones and down: iPhone, iPad, Android Phones */
+@media (max-width: 480px) {
+  body {
+    font-size: 11px;
+  }
+  .back {
+    padding: 1.0em;
+  }
+  #play h5.status {
+    font-size: 1.3em;
+  }
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 768px) {
+  
+}
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 980px) {
+  
+}
+/* Large desktop */
+@media (min-width: 1200px) {
+  
+}

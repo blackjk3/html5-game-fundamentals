@@ -17,11 +17,15 @@ Jason Kadrmas @itooamaneatguy
 	* [Game Loop](#concepts-gameloop)
 		* [requestAnimationFrame](#concepts-raf)
 		* [cancelAnimationFrame](#concepts-caf)
-	* [Grid System](#concepts-grid)
-	* [Animation](#animation)	
+	* [Scale](#concepts-scale)
+		* [CSS](#scale-css)
+			* [Em's](#scale-ems)
+			* [Percentages](#scale-percentages)
+		* [Grid System](#scale-grid)
+	* [Animation](#concepts-animation)	
 	    * [DOM Animation](#concepts-animation-dom)
-	    	* Transitions
-	    	* Translations
+	    	* CSS Transitions
+	    	* CSS Translations
 		* [Canvas Animation](#concepts-animation-canvas)
 		* [Sprite Sheets](#concepts-animation-sprite-sheets)
 			* Blitting
@@ -37,7 +41,7 @@ Jason Kadrmas @itooamaneatguy
 ## <a name="introduction">Introduction</a>
 Games have always been a part of society, capturing ideas and behaviors of people and becoming an extension of their imagination and creativity.  Dice games, tile games, and card games all date back to ancient times, with dice games dating as far back as 3000 years.  Today's games still spark those same human interactions.  Although the same principles apply to today's games, the medium has changed dramatically. Now days there many options when creating a game. Almost all older games have an online counterpart and due to the popularity of app stores, games have become even easier to market and distribute.  The question then arises, what technology should I use to build my game?
 
-Web games until very recently were almost exclusively built on platforms using browser plugins.  Adobe Flash was king with other plugins like Unity filling out the market. With almost unbelievable performance updates to JavaScript engines, the emergence of bitmap drawing via canvas, and powerful new CSS3 features, the dream of building an entire game without plugins is becoming a reality.  Building a game exclusively using web technologies presents a set of challenges, however, the landscape is changing at an alarming pace.  New specs and API's seem to be coming out on a daily basis, and browser vendors are aggressively implementing these new features.  It is an exciting time to be a creative JavaScript developer!
+Web games until very recently were almost exclusively built on platforms using browser plugins.  Adobe Flash was king with other plugins like Unity filling out the market. With almost unbelievable performance updates to JavaScript engines, the bitmap drawing capabilities of canvas, and powerful new CSS3 features, the dream of building an entire game without plugins is becoming a reality.  Building a game exclusively using web technologies presents a set of challenges, however, the landscape is changing at an alarming pace.  New specs and API's seem to be coming out on a daily basis, and browser vendors are aggressively implementing these new features.  It is an exciting time to be a creative JavaScript developer!
 
 The aim of this book is to highlight some common gaming practices and how those practices can relate when building a game with HTML5, JavaScript, and CSS.
 
@@ -118,13 +122,13 @@ When developing a game, choosing assets can become very important.  These choice
 ### <a name="thebasics-img">Images</a>
 Images play an important role in any game.  Images convey a level of detail that could not be achieved easily using CSS, SVG, or canvas rendering.  As we will see later, for many types of animation, sequenced images or “sprite sheets” are used quite frequently.  So when should an image be used?  There are no hard and fast rules, but whenever there is a lot of detail or a complicated animation sequence, images tend to be the best option.
 
-<a href="http://dl.dropbox.com/u/21521496/cf.objective/index.html#/6" target="_blank"><img src="http://client.kadrmasconcepts.com/blog_examples/html5-game-fundamentals/bird.png"></a><br>
+<a href="http://dl.dropbox.com/u/21521496/cf.objective/index.html#/6" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch01-assets-images/bird.png"></a><br>
 Guideline: Crazy detail, crazy animation, use images.
 
 ### <a name="thebasics-css">CSS</a>
 With the emergence of CSS3 game developers have quite a few more options when styling and producing game elements.  Transforms and transitions can position and animation your content, while @font-face can give your game snappy new typography.  Using only CSS it is easily possible to create a simple menu screen like Fig 2.
 
-![center](http://client.kadrmasconcepts.com/blog_examples/html5-game-fundamentals/game-menu.png)
+![center](http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch01-assets-css/game-menu.png)
 
 Fig 2
 
@@ -195,7 +199,7 @@ Coming soon
 The central component of most games revolves around a game loop.  A game loop can be thought of as the main hub that controls actions within a game.  Upon each tick of the loop, the game may be asked to perform multiple tasks.  These tasks can range from updating and drawing new character positions on the screen to performing collision detection between objects.  
 
 #### <a name="concepts-raf">Request Animation Frame (rAF)</a>
-In order to create a game loop using JavaScript we can use an API (requestAnimationFrame) to inform the browser that we would like to do some animation.  Just like the method name says, we are going to request an animiation frame.  After the browser gives us the animation frame it will call the provided callback function.  From this function we can request another frame, thus creating a game loop.  In the example below there is a cross browser shim for rAF, plus an animate() function that will serve as the game loop.  Notice that within the animate function is a requestAnimationFrame call and that animate iself is passed in as the callback.  This creates our game loop.  The game loop will then check any collisions within the game, and finally it will render out the new positions of the game elements.
+In order to create a game loop using JavaScript we can use an API (requestAnimationFrame) to inform the browser that we would like to do some animation.  Just like the method name says, we are going to request an animiation frame, which the browser will try to sync up to our monitor refresh rate of 60FPS.  After the browser gives us the animation frame it will call the provided callback function.  From this function we can request another frame, thus creating a game loop.  In the example below, there is a cross browser shim for rAF, plus an animate() function that will serve as the game loop.  Notice that within the animate function is a requestAnimationFrame call and that animate iself is passed in as the callback.  This creates our game loop.  The game loop will then check any collisions within the game, and finally it will render out the new positions of the game elements.
 
 ```javascript
 
@@ -240,7 +244,7 @@ function animate() {
 ```
 
 #### <a name="concepts-caf">Cancel Animation Frame</a>
-Now that we know how to start a game loop, we should figure out how to stop it.  You probably will need to turn the game loop on and off for many different reasons.  For example, when a user quits gameplay and wants to move back to the menu screen it doesn't really make sense to keep a game loop running.  That would just be a waste of cpu cycles and possibly battery life.  To cancel a request for an animation frame we can use the cancelAnimationFrame method.  cancelAnimationFrame() requires the frame id we want to cancel to be passed in.  We can easily modify the animate function from the previous example to store the frame id.  Now that we have the id it is as simple as passing it to cancelAnimationFrame().
+Now that we know how to start a game loop, we should figure out how to stop it.  You probably will need to turn the game loop on and off for many different reasons.  For example, when a user quits gameplay and wants to move back to the menu screen it doesn't really make sense to keep a game loop running.  That would just be a waste of cpu cycles and possibly battery life.  To cancel a request for an animation frame we can use the cancelAnimationFrame method.  The cancelAnimationFrame() method requires the frame id we want to cancel to be passed in.  We can easily modify the animate function from the previous example to store the current frame id.  Now that we have the id it is as simple as passing it to cancelAnimationFrame().
 
  ```javascript
 
@@ -260,3 +264,41 @@ function cancel() {
 }
 
  ```
+
+
+## <a name="concepts-scale">Scale</a>
+Coming soon.
+
+## <a name="concepts-animation">Animation</a>
+At the heart of any great game is animation.  Good animation can provide game functionallity, polish, and style.  When building an HTML5 game there are many different ways to animate elements.  Often times multiple techniques are employed for different game senerios.  In this section we will take a look at a few of these techniques and analyze the possible use cases for each.
+
+### <a name="concepts-animation-transitions">CSS3 Transitions</a>
+Introduced with CSS3, transistions allow for a transition animation between styles and classes.  Without any JavaScript, the browser will interpolate an animation based on the beginning style and ending style information.  In the example below, the #bee-transition class contains our base style information, along with our transition.  In our transition rule we are telling the browser to animate "all" css properties from the base state to a new state, do it in 1 second, and apply an ease-out.  When the bee is hovered over the new style information will be set, which will trigger the transition animation.
+
+```css
+.bee-transition {
+  -webkit-transition: all 1s ease-out;  /* Saf3.2+, Chrome */
+     -moz-transition: all 1s ease-out;  /* FF4+ */
+      -ms-transition: all 1s ease-out;  /* IE10 */
+       -o-transition: all 1s ease-out;  /* Opera 10.5+ */
+          transition: all 1s ease-out;
+
+  -webkit-transform: rotate(0deg) scale(1.0);  /* Saf3.1+, Chrome */
+     -moz-transform: rotate(0deg) scale(1.0);  /* FF3.5+ */
+      -ms-transform: rotate(0deg) scale(1.0);  /* IE9 */
+       -o-transform: rotate(0deg) scale(1.0);  /* Opera 10.5 */
+          transform: rotate(0deg) scale(1.0);
+}
+
+.bee-transition:hover {
+  -webkit-transform: rotate(180deg) scale(1.7);  /* Saf3.1+, Chrome */
+     -moz-transform: rotate(180deg) scale(1.7);  /* FF3.5+ */
+      -ms-transform: rotate(180deg) scale(1.7);  /* IE9 */
+       -o-transform: rotate(180deg) scale(1.7);  /* Opera 10.5 */
+          transform: rotate(180deg) scale(1.7);
+}
+```
+
+<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/img/bee-animation.png"></a><br>
+
+The main thing to note about this technique is that we don't really have much control over the animation.  The transitioned style is set, and the browser takes care of the rest.  There is no progress information that is sent along with the transistion.  Clearly, for more involved animations this technique is not going to work.  However, for simple animations that do not require progress information, transistions can be helpful.  We are talking about those fire and forget animations. For example, sliding a menu in, updating a score, or flashing a game notification, such as "+100" might be good use cases for transitions.

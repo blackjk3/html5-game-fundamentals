@@ -1,0 +1,21 @@
+.bee-transition {
+	-webkit-transition: all 1s ease-out;  /* Saf3.2+, Chrome */
+     -moz-transition: all 1s ease-out;  /* FF4+ */
+      -ms-transition: all 1s ease-out;  /* IE10 */
+       -o-transition: all 1s ease-out;  /* Opera 10.5+ */
+          transition: all 1s ease-out;
+
+	-webkit-transform: rotate(0deg) scale(1.0);  /* Saf3.1+, Chrome */
+     -moz-transform: rotate(0deg) scale(1.0);  /* FF3.5+ */
+      -ms-transform: rotate(0deg) scale(1.0);  /* IE9 */
+       -o-transform: rotate(0deg) scale(1.0);  /* Opera 10.5 */
+          transform: rotate(0deg) scale(1.0);
+}
+
+.bee-transition:hover {
+	-webkit-transform: rotate(450deg) scale(1.3);  /* Saf3.1+, Chrome */
+     -moz-transform: rotate(450deg) scale(1.3);  /* FF3.5+ */
+      -ms-transform: rotate(450deg) scale(1.3);  /* IE9 */
+       -o-transform: rotate(450deg) scale(1.3);  /* Opera 10.5 */
+          transform: rotate(450deg) scale(1.3);
+}

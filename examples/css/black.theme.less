@@ -1,0 +1,45 @@
+html, body { height: 100%; }
+
+header, footer, article, div, span, a {
+  -webkit-backface-visibility: hidden;
+  -webkit-touch-callout: none;
+}
+
+body.stage {
+
+  -webkit-user-select: none;	
+  overflow:hidden;
+  margin: 0; padding: 0;
+  
+  /* Stage header */
+  & > header {
+    position: absolute;
+    background:#191919;
+  }
+
+  /* Stage article */
+  & > article {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  footer {
+  	background:#191919;
+    width:100%;
+    height: 40px;
+    bottom:0;	
+  }
+
+  /* All scene headers */
+  header {
+    width:100%;
+    height: 40px;
+  }
+
+  .viewport {
+  	position:relative;
+  }
+}
