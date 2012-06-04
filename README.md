@@ -10,10 +10,13 @@ Jason Kadrmas @itooamaneatguy
 	* [DOM](#thebasics-dom)
 	* [Canvas](#thebasics-canvas)
 	* [Choosing Assets](#thebasics-assets)
+		* [Images](#thebasics-img)
+		* [CSS](#thebasics-css)
+		* [SVG](#thebasics-svg)
 * [Game Concepts](#concepts)	
 	* [Game Loop](#concepts-gameloop)
-		* requestAnimationFrame
-		* cancelAnimationFrame
+		* [requestAnimationFrame](#concepts-raf)
+		* [cancelAnimationFrame](#concepts-caf)
 	* [Grid System](#concepts-grid)
 	* [Animation](#animation)	
 	    * [DOM Animation](#concepts-animation-dom)
@@ -112,10 +115,13 @@ The canvas element has entire books dedicated to covering it in complete detail.
 ### <a name="thebasics-assets">Choosing Assets</a>
 When developing a game, choosing assets can become very important.  These choices not only affect performance, but they can also influence how long it will take to develop a game.  For example, if you choose to make a canvas based game it might make sense to create the menu screens using DOM elements instead of trying to layout and draw each item onto a canvas.  
 
-### Images
+### <a name="thebasics-img">Images</a>
 Images play an important role in any game.  Images convey a level of detail that could not be achieved easily using CSS, SVG, or canvas rendering.  As we will see later, for many types of animation, sequenced images or “sprite sheets” are used quite frequently.  So when should an image be used?  There are no hard and fast rules, but whenever there is a lot of detail or a complicated animation sequence, images tend to be the best option.
 
-### CSS
+<a href="http://dl.dropbox.com/u/21521496/cf.objective/index.html#/6" target="_blank"><img src="http://client.kadrmasconcepts.com/blog_examples/html5-game-fundamentals/bird.png"></a><br>
+Guideline: Crazy detail, crazy animation, use images.
+
+### <a name="thebasics-css">CSS</a>
 With the emergence of CSS3 game developers have quite a few more options when styling and producing game elements.  Transforms and transitions can position and animation your content, while @font-face can give your game snappy new typography.  Using only CSS it is easily possible to create a simple menu screen like Fig 2.
 
 ![center](http://client.kadrmasconcepts.com/blog_examples/html5-game-fundamentals/game-menu.png)
@@ -149,13 +155,15 @@ h1, h2, h3, h4 {
 Next up on our simple menu screen is the background.  The background was created with a simple CSS radial gradient.  No longer do you have to export gradient image slices from Photoshop to create simple backgrounds.
 
 ```css
-background: -moz-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%, rgba(28,30,32,1) 100%);
-background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(85,90,95,1)), color-stop(100%,rgba(28,30,32,1)));
-background: -webkit-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-background: -o-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-background: -ms-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-background: radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
- ```
+body {
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%, rgba(28,30,32,1) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(85,90,95,1)), color-stop(100%,rgba(28,30,32,1)));
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+	background: -o-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+	background: radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+}
+```
 
 #### CSS Shadows
 Our buttons were also created and styled entirely in CSS.  The buttons have a subtle blue linear gradient applied and an ever so slight shadow.  Below is an example of the shadow.
@@ -179,15 +187,15 @@ Our buttons were also created and styled entirely in CSS.  The buttons have a su
 #### Preprocessors
 Looking at the different CSS code above, the first thing one might notice is that there is quite a bit of repetitiveness for each vendor prefix.   If you are using CSS to style your menu or other game screens, do yourself a favor and use a CSS preprocessor.    There are many excellent preprocessors out there including [SASS]( http://sass-lang.com/), [LESS]( http://lesscss.org/), [Stylus]( http://learnboost.github.com/stylus/), etc.  A preprocessor will easily cut down game development time and will allow your game to become more maintainable as it becomes more complicated. 
 
-### SVG
+### <a name="thebasics-svg">SVG</a>
 Coming soon
 
-## <a name="thebasics">Game Concepts</a>
-### <a name="thebasics-gameloop">Game Loop</a>
+## <a name="concepts">Game Concepts</a>
+### <a name="concepts-gameloop">Game Loop</a>
 The central component of most games revolves around a game loop.  A game loop can be thought of as the main hub that controls actions within a game.  Upon each tick of the loop, the game may be asked to perform multiple tasks.  These tasks can range from updating and drawing new character positions on the screen to performing collision detection between objects.  
 
-#### Request Animation Frame (rAF)
-In order to create a game loop using JavaScript we can use an API (requestAnimationFrame) to inform the browser that we would like to do some animation.  We are going to request an animiation frame.  After the browser gives us the animation frame it will call the provided callback function.  From this function we can request another frame, thus creating a game loop.  In the example below there is a cross browser shim for rAF, plus an animate() function that will serve as the game loop.  Notice that within the animate function is a requestAnimationFrame call and animate iself is passed in as the callback.  Thus, creating a game loop.  The game loop will then check any collisions within the game, and finally it will render out the new positions of the game elements.
+#### <a name="concepts-raf">Request Animation Frame (rAF)</a>
+In order to create a game loop using JavaScript we can use an API (requestAnimationFrame) to inform the browser that we would like to do some animation.  Just like the method name says, we are going to request an animiation frame.  After the browser gives us the animation frame it will call the provided callback function.  From this function we can request another frame, thus creating a game loop.  In the example below there is a cross browser shim for rAF, plus an animate() function that will serve as the game loop.  Notice that within the animate function is a requestAnimationFrame call and that animate iself is passed in as the callback.  This creates our game loop.  The game loop will then check any collisions within the game, and finally it will render out the new positions of the game elements.
 
 ```javascript
 
@@ -231,8 +239,8 @@ function animate() {
 
 ```
 
-#### Cancel Animation Frame
-Now that we know how to start a game loop, we should figure out how to stop it.  You probably will need to turn the game loop on and off for many different reasons.  When a quits gameplay and wants to move back to the menu screen it doesn't really make sense to keep a game loop running.  That would just waste cpu cycles and possibly battery life.  To cancel a request for an animation frame we can use the cancelAnimationFrame method.  cancelAnimationFrame() requires the frame id to cancel.  We can modify animate function from the previous example to store the frame id.  Now that we have the id it is as simple as passing it to cancelAnimationFrame().
+#### <a name="concepts-raf">Cancel Animation Frame</a>
+Now that we know how to start a game loop, we should figure out how to stop it.  You probably will need to turn the game loop on and off for many different reasons.  For example, when a user quits gameplay and wants to move back to the menu screen it doesn't really make sense to keep a game loop running.  That would just be a waste of cpu cycles and possibly battery life.  To cancel a request for an animation frame we can use the cancelAnimationFrame method.  cancelAnimationFrame() requires the frame id we want to cancel to be passed in.  We can easily modify the animate function from the previous example to store the frame id.  Now that we have the id it is as simple as passing it to cancelAnimationFrame().
 
  ```javascript
 
