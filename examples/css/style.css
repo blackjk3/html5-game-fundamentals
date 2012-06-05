@@ -212,6 +212,12 @@ h4 {
   color: #555;
   text-shadow: 1px 1px 0px #eee, 3px 3px 0px #707070;
 }
+article {
+  position: relative;
+  width: 60%;
+  height: 100%;
+  margin: 0 auto;
+}
 .scene {
   position: absolute;
 }

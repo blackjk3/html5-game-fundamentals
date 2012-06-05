@@ -25,7 +25,7 @@ Jason Kadrmas @itooamaneatguy
 	* [Animation](#concepts-animation)	
 	    * [DOM Animation](#concepts-animation-dom)
 	    	* CSS Transitions
-	    	* CSS Translations
+        * Using the game loop
 		* [Canvas Animation](#concepts-animation-canvas)
 		* [Sprite Sheets](#concepts-animation-sprite-sheets)
 			* Blitting
@@ -122,8 +122,8 @@ When developing a game, choosing assets can become very important.  These choice
 ### <a name="thebasics-img">Images</a>
 Images play an important role in any game.  Images convey a level of detail that could not be achieved easily using CSS, SVG, or canvas rendering.  As we will see later, for many types of animation, sequenced images or “sprite sheets” are used quite frequently.  So when should an image be used?  There are no hard and fast rules, but whenever there is a lot of detail or a complicated animation sequence, images tend to be the best option.
 
-<a href="http://dl.dropbox.com/u/21521496/cf.objective/index.html#/6" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch01-assets-images/bird.png"></a><br>
-Guideline: Crazy detail, crazy animation, use images.
+<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch01-assets-images/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch01-assets-images/bird.png"></a><br>
+Example: Crazy detail, crazy animation.
 
 ### <a name="thebasics-css">CSS</a>
 With the emergence of CSS3 game developers have quite a few more options when styling and producing game elements.  Transforms and transitions can position and animation your content, while @font-face can give your game snappy new typography.  Using only CSS it is easily possible to create a simple menu screen like Fig 2.
@@ -275,6 +275,9 @@ At the heart of any great game is animation.  Good animation can provide game fu
 ### <a name="concepts-animation-transitions">CSS3 Transitions</a>
 Introduced with CSS3, transistions allow for a transition animation between styles and classes.  Without any JavaScript, the browser will interpolate an animation based on the beginning style and ending style information.  In the example below, the #bee-transition class contains our base style information, along with our transition.  In our transition rule we are telling the browser to animate "all" css properties from the base state to a new state, do it in 1 second, and apply an ease-out.  When the bee is hovered over the new style information will be set, which will trigger the transition animation.
 
+<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/img/bee-animation.png"></a><br>
+Example: CSS Transition
+
 ```css
 .bee-transition {
   -webkit-transition: all 1s ease-out;  /* Saf3.2+, Chrome */
@@ -299,6 +302,12 @@ Introduced with CSS3, transistions allow for a transition animation between styl
 }
 ```
 
-<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/img/bee-animation.png"></a><br>
-
 The main thing to note about this technique is that we don't really have much control over the animation.  The transitioned style is set, and the browser takes care of the rest.  There is no progress information that is sent along with the transistion.  Clearly, for more involved animations this technique is not going to work.  However, for simple animations that do not require progress information, transistions can be helpful.  We are talking about those fire and forget animations. For example, sliding a menu in, updating a score, or flashing a game notification, such as "+100" might be good use cases for transitions.
+
+### <a name="concepts-animation-loop">Using the game loop</a>
+Sometimes our animation needs a bit more control and needs to be managed frame by frame.  This senerio is a perfect use of the game loop technique described previously.
+
+<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-loop/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-loop/img/game-loop.png"></a><br>
+Example: Our bee following a parabolic path.
+
+

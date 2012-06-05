@@ -1,0 +1,9 @@
+#bird {
+	text-align: center;
+	background: transparent url(../robin.png) 0 0 no-repeat;
+	margin: 0 auto;
+	width: 240px;
+	height: 314px;
+	z-index: 2000;
+	cursor: pointer;
+}
