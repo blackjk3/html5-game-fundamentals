@@ -7,32 +7,32 @@ Jason Kadrmas @itooamaneatguy
 
 * [Introduction](#introduction)
 * [The Basics](#thebasics)
-	* [DOM](#thebasics-dom)
-	* [Canvas](#thebasics-canvas)
-	* [Choosing Assets](#thebasics-assets)
-		* [Images](#thebasics-img)
-		* [CSS](#thebasics-css)
-		* [SVG](#thebasics-svg)
-* [Game Concepts](#concepts)	
-	* [Game Loop](#concepts-gameloop)
-		* [requestAnimationFrame](#concepts-raf)
-		* [cancelAnimationFrame](#concepts-caf)
-	* [Scale](#concepts-scale)
-		* [CSS](#scale-css)
-			* [Em's](#scale-ems)
-			* [Percentages](#scale-percentages)
-		* [Grid System](#scale-grid)
-	* [Animation](#concepts-animation)	
-	    * [DOM Animation](#concepts-animation-dom)
-	    	* CSS Transitions
-        * Using the game loop
-		* [Canvas Animation](#concepts-animation-canvas)
-		* [Sprite Sheets](#concepts-animation-sprite-sheets)
-			* Blitting
-			* DOM
-			* Canvas
+  * [DOM](#thebasics-dom)
+  * [Canvas](#thebasics-canvas)
+  * [Choosing Assets](#thebasics-assets)
+    * [Images](#thebasics-img)
+    * [CSS](#thebasics-css)
+    * [SVG](#thebasics-svg)
+* [Game Concepts](#concepts)  
+  * [Game Loop](#concepts-gameloop)
+    * [requestAnimationFrame](#concepts-raf)
+    * [cancelAnimationFrame](#concepts-caf)
+  * [Scale](#concepts-scale)
+    * [CSS](#scale-css)
+      * [Em's](#scale-ems)
+      * [Percentages](#scale-percentages)
+    * [Grid System](#scale-grid)
+  * [Animation](#concepts-animation)  
+    * [DOM Animation](#concepts-animation-dom)
+        * [CSS Transitions](#concepts-animation-transitions)
+        * [Using the game loop](#concepts-animation-loop)
+    * [Canvas Animation](#concepts-animation-canvas)
+    * [Sprite Sheets](#concepts-animation-sprite-sheets)
+        * Blitting
+        * DOM
+        * Canvas
 * [Saving Data](#saving)
-* [WebGL](#webgl)	
+* [WebGL](#webgl) 
 * [PhoneGap](#phonegap)
 * [Automation](#automation)
 * [Debugging](#debugging)
@@ -43,25 +43,25 @@ Games have always been a part of society, capturing ideas and behaviors of peopl
 
 Web games until very recently were almost exclusively built on platforms using browser plugins.  Adobe Flash was king with other plugins like Unity filling out the market. With almost unbelievable performance updates to JavaScript engines, the bitmap drawing capabilities of canvas, and powerful new CSS3 features, the dream of building an entire game without plugins is becoming a reality.  Building a game exclusively using web technologies presents a set of challenges, however, the landscape is changing at an alarming pace.  New specs and API's seem to be coming out on a daily basis, and browser vendors are aggressively implementing these new features.  It is an exciting time to be a creative JavaScript developer!
 
-The aim of this book is to highlight some common gaming practices and how those practices can relate when building a game with HTML5, JavaScript, and CSS.
+The aim of this book is to highlight some common gaming practices and how those practices can relate when building a game with HTML5, JavaScript, and CSS.  Note: The source code for the accompanying examples can be found in the examples folder of this GitHub repository.
 
 ## <a name="thebasics">The Basics</a>
 Like any detailed subject, gaming has some basic principles that can be useful when getting started.  HTML5 games in particular have a few different options and depending on what you choose, they have very different possibilities and limitations.
 
 ### <a name="thebasics-dom">DOM</a>
-The first option we will explore when building an HTML5 game is a DOM based game.  When HTML5 games are mentioned, your first thought, like mine, is most likely centered around building a canvas based game.  Sometimes this is not best option.  Believe it or not DOM based games in some instances can have better performance than canvas.  This is especially true in the mobile space where canvas is most likely not hardware accelerated.
+The first option we will explore when building an HTML5 game is a DOM based game.  When HTML5 games are mentioned, your first thought, like mine, is most likely centered on building a canvas-based game.  Sometimes this is not best option.  Believe it or not DOM based games in some instances can have better performance than canvas.  This is especially true in the mobile space where canvas is most likely not hardware accelerated.
 
 ### What is DOM?
-The document object model, as described by Wikipedia is a "is a cross-platform and language-independent convention for representing and interacting with objects in HTML, XHTML and XML documents" [1](http://en.wikipedia.org/wiki/Document_Object_Model).  Back in Flash, there was there was a technique called screen invalidation that would mark areas of the screen that needed to be refreshed based on the objects on the stage and how they were moving.  The browser handles this process in a similar way.  Browser layout engines will listen for changes to the DOM and will repaint or reflow the page accordingly.  So what does this mean for writing games?  It means that the browser is going to do the work of repainting the screen for you when objects change.  This can be beneficial for simple games where there are a few number of elements or updates are happening infrequently.  Board, card, and tile games can be good candidates as DOM based games.  Another added benefit of building DOM based games is that there is already large number of developers that are currently building client applications entirely in JavaScript.  These developers already have the skillset required to start building DOM games without having to learn how to manipulate the canvas element.
+The document object model, as described by Wikipedia is a "is a cross-platform and language-independent convention for representing and interacting with objects in HTML, XHTML and XML documents" [1](http://en.wikipedia.org/wiki/Document_Object_Model).  Back in Flash, there was a technique called screen invalidation that would mark areas of the screen that needed to be refreshed based on the objects on the stage and how they were moving.  The browser handles this process in a similar way.  Browser layout engines will listen for changes to the DOM and will repaint or reflow the page accordingly.  So what does this mean for writing games?  It means that the browser is going to do the work of repainting the screen for you when objects change.  This can be beneficial for simple games where there are a few number of elements or updates are happening infrequently.  Board, card, and tile games can be good candidates as DOM based games.  Another added benefit of building DOM based games is that there is already large number of developers that are currently building client applications entirely in JavaScript.  These developers already have the skillset required to start building DOM games without having to learn how to manipulate the canvas element.
 
 ### <a name="thebasics-canvas">Canvas</a>
 
-Canvas is an HTML element that is bitmap based and can be drawn to using JavaScript.  A simple analogy is to think of a canvas element like an etch-a-sketch.  You can continue drawing to the canvas context, adding detail, until you decide to clear the canvas.  Clearing the canvas is equivalent to shaking an etch-a-sketch clean.  One issue to note, is we will need a separate mechanism to keep track of objects that have been painted to canvas or have been cleared from canvas.  This is because canvas only paints to a context, it does not retain any information or properties on that object, such as width, height, rotation scale, etc.
+Canvas is an HTML element that is bitmap based and can be drawn to using JavaScript.  A simple analogy is to think of a canvas element like an etch-a-sketch.  You can continue drawing to the canvas context, adding detail, until you decide to clear the canvas.  Clearing the canvas is equivalent to shaking an etch-a-sketch clean.  One issue to note is we will need a separate mechanism to keep track of objects that have been painted to canvas or have been cleared from canvas.  This is because canvas only paints to a context; it does not retain any information or properties on that object, such as width, height, rotation scale, etc.
 
 <center><img src="http://upload.wikimedia.org/wikipedia/commons/b/be/EtchASketch10-23-2004.jpg" width="450" height="350" style="border-radius: 7px; margin: 10px;"></center>
 
 ### Canvas Basics
-In order to start drawing on a canvas we need access to a canvas context.  There are two separate contexts.  One context is for 2D drawing,  and a second context is an experimental context for 3D and WebGL.  For the basics we will start by adding a canvas element and getting a 2D context.
+In order to start drawing on a canvas we need access to a canvas context.  There are two separate contexts.  One context is for 2D drawing, and a second context is an experimental context for 3D and WebGL.  For the basics we will start by adding a canvas element and getting a 2D context.
 
 ```html
 <html>  
@@ -91,7 +91,7 @@ Images can also be drawn to a canvas context using the drawImage() method or cre
 ```javascript
 var image = new Image();
 image.onload = function() {
-	ctx.drawImage( image, 0, 0, size, size );
+  ctx.drawImage( image, 0, 0, size, size );
 };
 image.src = "img/colorwheel.png";
 ```
@@ -141,10 +141,10 @@ The first feature to point out is the header.  It has been styled with a custom 
 @font-face {
     font-family: 'ChunkFiveRegular';
     src:
-    	url('Chunkfive-webfont.eot?#') format('eot'),  /* IE6–8 */ 
-    	url('type/Chunkfive-webfont.ttf') format('truetype'), /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
-    	url('Chunkfive-webfont.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-    	url('type/Chunkfive-webfont.svg#ChunkFiveRegular') format('svg');
+      url('Chunkfive-webfont.eot?#') format('eot'),  /* IE6–8 */ 
+      url('type/Chunkfive-webfont.ttf') format('truetype'), /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+      url('Chunkfive-webfont.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+      url('type/Chunkfive-webfont.svg#ChunkFiveRegular') format('svg');
        
     font-weight: normal;
     font-style: normal;
@@ -160,12 +160,12 @@ Next up on our simple menu screen is the background.  The background was created
 
 ```css
 body {
-	background: -moz-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%, rgba(28,30,32,1) 100%);
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(85,90,95,1)), color-stop(100%,rgba(28,30,32,1)));
-	background: -webkit-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-	background: -o-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-	background: -ms-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
-	background: radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+  background: -moz-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%, rgba(28,30,32,1) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(85,90,95,1)), color-stop(100%,rgba(28,30,32,1)));
+  background: -webkit-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+  background: -o-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+  background: -ms-radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
+  background: radial-gradient(center, ellipse cover,  rgba(85,90,95,1) 0%,rgba(28,30,32,1) 100%);
 }
 ```
 
@@ -199,7 +199,7 @@ Coming soon
 The central component of most games revolves around a game loop.  A game loop can be thought of as the main hub that controls actions within a game.  Upon each tick of the loop, the game may be asked to perform multiple tasks.  These tasks can range from updating and drawing new character positions on the screen to performing collision detection between objects.  
 
 #### <a name="concepts-raf">Request Animation Frame (rAF)</a>
-In order to create a game loop using JavaScript we can use an API (requestAnimationFrame) to inform the browser that we would like to do some animation.  Just like the method name says, we are going to request an animiation frame, which the browser will try to sync up to our monitor refresh rate of 60FPS.  After the browser gives us the animation frame it will call the provided callback function.  From this function we can request another frame, thus creating a game loop.  In the example below, there is a cross browser shim for rAF, plus an animate() function that will serve as the game loop.  Notice that within the animate function is a requestAnimationFrame call and that animate iself is passed in as the callback.  This creates our game loop.  The game loop will then check any collisions within the game, and finally it will render out the new positions of the game elements.
+In order to create a game loop using JavaScript we can use an API (requestAnimationFrame) to inform the browser that we would like to do some animation.  Just like the method name says, we are going to request an animation frame, which the browser will try to sync up to our monitor refresh rate of 60FPS.  After the browser gives us the animation frame it will call the provided callback function.  From this function we can request another frame, thus creating a game loop.  In the example below, there is a cross browser shim for rAF, plus an animate() function that will serve as the game loop.  Notice that within the animate function is a requestAnimationFrame call and that animate itself is passed in as the callback.  This creates our game loop.  The game loop will then check any collisions within the game, and finally it will render out the new positions of the game elements.
 
 ```javascript
 
@@ -270,10 +270,12 @@ function cancel() {
 Coming soon.
 
 ## <a name="concepts-animation">Animation</a>
-At the heart of any great game is animation.  Good animation can provide game functionallity, polish, and style.  When building an HTML5 game there are many different ways to animate elements.  Often times multiple techniques are employed for different game senerios.  In this section we will take a look at a few of these techniques and analyze the possible use cases for each.
+At the heart of any great game is animation.  Good animation can provide game functionality, polish, and style.  When building an HTML5 game there are many different ways to animate elements.  Often times multiple techniques are employed for different game scenarios.  In this section we will take a look at a few of these techniques and analyze the possible use cases for each.
 
-### <a name="concepts-animation-transitions">CSS3 Transitions</a>
-Introduced with CSS3, transistions allow for a transition animation between styles and classes.  Without any JavaScript, the browser will interpolate an animation based on the beginning style and ending style information.  In the example below, the #bee-transition class contains our base style information, along with our transition.  In our transition rule we are telling the browser to animate "all" css properties from the base state to a new state, do it in 1 second, and apply an ease-out.  When the bee is hovered over the new style information will be set, which will trigger the transition animation.
+### <a name="concepts-animation-dom">DOM Animation</a>
+
+#### <a name="concepts-animation-transitions">CSS3 Transitions</a>
+Introduced with CSS3, transitions allow for a transition animation between styles and classes.  Without any JavaScript, the browser will interpolate an animation based on the beginning style and ending style information.  In the example below, the #bee-transition class contains our base style information, along with our transition.  In our transition rule we are telling the browser to animate "all" CSS properties from the base state to a new state, do it in 1 second, and apply an ease-out.  When the bee is hovered over the new style information will be set, which will trigger the transition animation.
 
 <a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-transitions/img/bee-animation.png"></a><br>
 Example: CSS Transition
@@ -302,12 +304,163 @@ Example: CSS Transition
 }
 ```
 
-The main thing to note about this technique is that we don't really have much control over the animation.  The transitioned style is set, and the browser takes care of the rest.  There is no progress information that is sent along with the transistion.  Clearly, for more involved animations this technique is not going to work.  However, for simple animations that do not require progress information, transistions can be helpful.  We are talking about those fire and forget animations. For example, sliding a menu in, updating a score, or flashing a game notification, such as "+100" might be good use cases for transitions.
+The main thing to note about this technique is that we don't really have much control over the animation.  The transitioned style is set, and the browser takes care of the rest.  There is no progress information that is sent along with the transition.  Clearly, for more involved animations this technique is not going to work.  However, for simple animations that do not require progress information, transitions can be helpful.  We are talking about those fire and forget animations. For example, sliding a menu in, updating a score, or flashing a game notification, such as "+100" might be good use cases for transitions.
 
-### <a name="concepts-animation-loop">Using the game loop</a>
-Sometimes our animation needs a bit more control and needs to be managed frame by frame.  This senerio is a perfect use of the game loop technique described previously.
+#### <a name="concepts-animation-loop">Using the game loop</a>
+Sometimes our animation needs a bit more control and needs to be managed frame by frame.  This scenario is a perfect use of the game loop technique described previously.
 
 <a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-loop/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-loop/img/game-loop.png"></a><br>
 Example: Our bee following a parabolic path.
 
+Let's take a look at how we can create our parabolic example.
+
+```html
+<div id="bee"></div>
+```
+
+``` css
+#bee {
+  margin: 0 auto;
+  width: 75px;
+  height: 75px;
+  background: url(../img/bee.png);
+}
+```
+
+```javascript
+(function() {
+  
+  // Initial variables
+  var bee = document.getElementById('bee'),
+    width = 300,
+    hRatio = Math.floor( window.innerHeight / width ),
+    x = 0,
+    y = 0,
+    step = 2,
+    rot = 0;
+
+  // Our Game Loop!
+  function animate() {
+    requestAnimationFrame( animate );
+    render();
+  }
+
+  function render() {
+    var pct = x / width;
+
+    // Check the bounds for width
+    // If met change directions.
+    if ( x > width || x < -width ) {
+      step *= -1;
+    }
+
+    // Step
+    x += step;
+    y = Math.floor( hRatio * x * Math.sin( pct ) ) + 140;
+
+    // Set our translation and rotation.
+    bee.style[vendor+'Transform'] = 'translate3d(' + x + 'px, ' + y + 'px, 0) rotate(' + 1.2 * x + 'deg)';
+  }
+
+  // Auto start our game
+  animate();
+})();
+```
+
+You can find the entire code under ch02-animation-loop within the examples folder.  In this example we are going to move our bee from width to -width (which happens to be set to 300) and will step by 2px each frame.  To obtain a y value we are playing around with passing a ratio to a Math.sin function.  A lot of animation is trial and error to get the correct motion you want.  Don't be afraid to experiment!  Finally, we are setting the translate3d and rotate transform properties to move our bee.  Try not to analyze the code in too much detail. Instead try to understand the concept of how a game loop can be used to create animations.  We will expand upon this concept in later examples.
+
+### <a name="concepts-animation-canvas">Canvas Animation</a>
+The previous example is looking good, however DOM animation has some limitations.  The main limitation is the amount of objects that can be animated at one time.  Unfortunatly interacting with the DOM is a slow process and it only becomes magnified with more interaction.  Compare that with canvas, which is built to paint objects directly to the context without all the baggage that DOM brings.  This is especially beneficial when canvas is being hardware accelerated.  Let's see if we can rewrite the previous example with canvas.
+
+<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-canvas/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-canvas/img/game-loop.png"></a><br>
+Example: Many busy bees on canvas.
+
+Our new example illustrates the benefits of canvas nicely.  Since canvas doesn't have to worry about the properties of each bee we can draw many of them at a time and still have good performance.  As a bonus, the technique to animating with canvas isn't all that different from DOM.  The code is a bit longer so we will have to break it down a bit.  Don't worry, all the code for the examples is on this GitHub repo.
+
+First we are going to load the bee image.  When the bee image is done loading and before we start the game loop we are going to create some bees.
+
+```javascript
+var bee = new Image();
+
+// Auto start our game loop after bee image is loaded.
+bee.onload = function() {
+  createBees();
+  animate();
+};
+bee.src = "img/bee.png";
+```
+Next, let's take a look at the createBees() function.  Inside of createBees() we are going to loop 15 times and push some initial parameters for each bee onto a bees array for later.
+
+```javascript
+var bees = [];
+
+function createBees() {
+
+  // Create 15 bees.
+  for(var i = 0; i < 15; i++) {
+    bees.push({
+      x: (i * 55) + 150, // Spread out 30px and translate 250px.
+      y: 0,
+      dy: 0
+    });
+  }
+
+}
+```
+
+Finally, as with DOM we have our animate loop and render function.  Now render looks kind of scary!  Don't worry it is actually not that bad.  We start by calling clearRect() on the canvas.  If you recall from before this will clear any previous drawing.  Next, we loop over the bees that are in the bees array.  We set a magical y position for each, (again, the product of some playing around) and figure out the delta from our previous y position.  
+
+Now it is time to draw.  First we save the current drawing state by calling context.save().  Then we set our translate, rotate, and scale on the context.  Lastly, we draw the bee image to the context and restore it back to the original drawing state for the next iteration of the loop.
+
+Tip: You may notice that the bees are rotating in the direction of their movement.  This is because we are computing the angular rotation based on the x and y velocity.  In case you are not up to date on your Physics courses, we can use the Math.atan2() function to easily compute the rotational value.
+
+```javascript
+// Our Game Loop!
+function animate() {
+  requestAnimationFrame( animate );
+  render();
+}
+
+function render() {
+  var pct = x / width, dy;
+
+  // Check the bounds for width
+  // If met change directions.
+  if ( x > width || x < -width ) {
+    dx *= -1;
+    scale *= -1;
+  }
+
+  // Step
+  x += dx;
+  
+  // Clear the canvas
+  context.clearRect( 0, 0, canvas.width, canvas.height );
+
+  // Loop over bees!
+  for( var i in bees ) {
+    
+    // Stagger y positions and translate down 300px
+    y = ( x * Math.sin( (1.5 - Math.abs(pct) ) * i * 0.7 ) ) + 300;
+
+    dy = y - bees[i].y;
+    bees[i].dy = dy;
+    bees[i].y = y;
+
+    // Save context
+    context.save();
+
+    // Translate, rotate, and scale each bee
+    context.translate( x + bees[i].x, y ); // Add an offset to each x to stagger bees
+    context.rotate( Math.atan2( dy, dx ) + 1.57 ); // convert angular rotation to radians
+    context.scale( scale, 1 ); // Scale trick to flip bee around
+
+    // Draw to bee to canvas
+    context.drawImage(bee, -(bee.width/2), -(bee.height/2) );
+
+    // Restore the context for the next bee
+    context.restore();
+  }
+}
+```
 

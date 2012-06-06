@@ -1,7 +1,8 @@
-// Request Animation Frame Shim.  Will setup multiple prefixes, plus
-// fallback support for browsers that do not support rAF.
+// Store the vendor prefix.
 var vendor;
 
+// Request Animation Frame Shim.  Will setup multiple prefixes, plus
+// fallback support for browsers that do not support rAF.
 (function() {
     var lastTime = 0;
     var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -10,6 +11,7 @@ var vendor;
         window.cancelAnimationFrame =
           window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
 
+        // Check which browser we are on and save the prefix.
         if ( window[vendors[x]+'RequestAnimationFrame'] ) {
 			vendor = vendors[x];
         }
@@ -30,37 +32,42 @@ var vendor;
             clearTimeout(id);
         };
 }());
-
+// END rAF shim
 
 (function() {
 	
+	// Initial variables
 	var bee = document.getElementById('bee');
-	var width = 300;
-	var hRatio = Math.floor(window.innerHeight / width);
-	var x = 0, y = 0;
-	var step = 2;
-	var rot = 0;
+		width = 300,
+		hRatio = Math.floor( window.innerHeight / width ),
+		x = 0,
+		y = 0,
+		step = 2,
+		rot = 0;
 
+	// Our Game Loop!
 	function animate() {
 		requestAnimationFrame( animate );
-
-		//checkCollisions();
 		render();
-		console.log(vendor);
 	}
 
 	function render() {
 		var pct = x / width;
 
+		// Check the bounds for width
+		// If met change directions.
 		if ( x > width || x < -width ) {
 			step *= -1;
 		}
 
+		// Step
 		x += step;
 		y = Math.floor( hRatio * x * Math.sin( pct ) ) + 140;
 
-		bee.style[vendor+'Transform'] = 'translate(' + x + 'px, ' + y + 'px) rotate(' + 1.2 * x + 'deg)';
+		// Set our translation and rotation.
+		bee.style[vendor+'Transform'] = 'translate3d(' + x + 'px, ' + y + 'px, 0) rotate(' + 1.2 * x + 'deg)';
 	}
 
+	// Auto start our game
 	animate();
 })();
