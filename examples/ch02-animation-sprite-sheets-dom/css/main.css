@@ -1,0 +1,47 @@
+.plumber {
+  width: 40px;
+  height: 40px;
+  background: url(../img/plumber-sheet.png);
+}
+
+.stand-left {
+  background-position: -80px 0;
+}
+
+.stand-right {
+  background-position: -240px 0;
+}
+
+.jump-left {
+  background-position: 0 0;
+}
+
+.jump-right {
+  background-position: -440px 0;
+}
+
+.run-left {
+  background-position: -120px 0;
+}
+
+.run-right {
+  background-position: -360px 0;
+}
+
+.container {
+	width: 400px;
+	margin: auto;
+}
+
+.center {
+  margin: auto;
+}
+
+.field {
+	margin: 0 0 50px 0;
+	width: 200px;
+	text-align: center;
+	float: left;
+	color: #fff;
+	font-size: 1.2em;
+}

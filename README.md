@@ -19,8 +19,8 @@ Jason Kadrmas @itooamaneatguy
       * [cancelAnimationFrame](#concepts-caf)
   * [Scale](#concepts-scale)
       * [CSS](#scale-css)
-        * [Em's](#scale-ems)
-        * [Percentages](#scale-percentages)
+          * [Em's](#scale-ems)
+          * [Percentages](#scale-percentages)
     * [Grid System](#scale-grid)
   * [Animation](#concepts-animation)  
     * [DOM Animation](#concepts-animation-dom)
@@ -28,9 +28,8 @@ Jason Kadrmas @itooamaneatguy
         * [Using the game loop](#concepts-animation-loop)
     * [Canvas Animation](#concepts-animation-canvas)
     * [Sprite Sheets](#concepts-animation-sprite-sheets)
-        * Blitting
-        * DOM
-        * Canvas
+        * [DOM](#concepts-animation-sprite-sheets-dom)
+        * [Canvas](#concepts-animation-sprite-sheets-canvas)
 * [Saving Data](#saving)
 * [WebGL](#webgl) 
 * [PhoneGap](#phonegap)
@@ -464,3 +463,155 @@ function render() {
 }
 ```
 
+### <a name="concepts-animation-sprite-sheets">Sprite Sheets</a>
+In order to describe the concept of sprite sheets we can get some help from an old plumber friend. Below is a simple sprite sheet hilighting a few of the actions our plumber can make.
+
+<img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-sprite-sheets-dom/img/plumber-sprite-diag.png">
+
+In the next few sections we will explore how to isolate each action and how to render them out to either DOM or canvas.
+
+#### <a name="concepts-animation-sprite-sheets-dom">DOM</a>
+To get started we will look at a simple example.  Let's just move the sprite sheet so that our plumber is standing and facing to the right.  In order to do that we will use the css background-position property.  By setting a fixed width and height and moving the background position we can create the illusion of animation.  It helps to think of of this technique like a flipbook.
+
+```html
+<div class="plumber stand-right"></div>
+```
+Our plumber markup
+
+```css
+.plumber {
+  width: 40px;
+  height: 40px;
+  background: url(../img/plumber-sheet.png);
+}
+
+.stand-right {
+  /* Note - background-position: x y; */
+  background-position: -240px 0;
+}
+
+.stand-left {
+  background-position: -80px 0;
+}
+```
+
+In our example we have defined a div with a class of plumber and stand-right.  The plumber class will load in our sprite sheet as the background image and set the width and height to 40px.  Then stand-right class is applied.  This class will move the background position of the sprite sheet -240px (to the left).  Our plumber should now be facing to the right.  To face the plumber left, all we would need to do is replace the stand-right class with stand-left in our markup.
+
+<img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-sprite-sheets-dom/img/plumber-sheet-standing.png">
+
+##### Animating
+Adding and removing classes is ok for static actions, however when there are many actions that need to animated over time or based on user input a better option is needed.  In order to get more control of our sprite sheet animations we will use JavaScript.
+
+<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-sprite-sheets-dom/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-sprite-sheets-dom/img/plumber-sheet-actions.png"></a><br>
+Example: Extracting multiple actions from our sprite sheet
+
+This will be our most complicated example to date so once again we will need to review it one section at a time.  The entire source can be located in the ch02-animation-sprite-sheets-dom folder.
+
+The first thing we will need to do is change our game loop logic.  Instead of having all the logic in our game loop we will use an event based system.  This way the game loop can publish an event each tick and then indivdual subscribers can listen and update themself accordingly. This is a popular technique referred to as Pub/Sub. Pub/Sub will also help to decouple the game components which will aid in testing as well as maintainablilty.  To trigger and bind to these events we will use Zepto.js.  jQuery could easily be used as well.
+
+```javascript 
+var FRAME_EVENT = 'raf:frame:tick',
+    doc = $(document);
+
+function animate() {
+  requestAnimationFrame( animate );
+  render();
+}
+
+function render() {
+  doc.trigger( FRAME_EVENT );
+}
+
+```
+Decoupled rAF loop.
+
+Notice all we are doing in the render function is triggering a 'raf:frame:tick' event on the document.  This helps us to keep all other logic out of our game loop.
+
+Next up we are going to setup an animationList object to describe the different animations we want to perform.  Each object within animationList has a key (which is the name) and  a few other properties.  The obj property refers to the particular DOM element we want to animate, duration is how long in milliseconds we want the animation to last, and size refers to the size of our sprite.  In our example we are setting size to 40 since that is the width and height of our plumber.  The positions array property describes the start and ending positions of the animation in relation to our sprite sheet.  The positions are expressed in "blocks".  That way if the size property changes we won't have to change our position data.  For example, 'run_right' has a starting position of 6 blocks and an ending position of 9 blocks.  Later on we will use the size and the position data to figure out our animation sequence.  Think of this object as the metadata that describes how to animate each action.
+
+```javascript
+// Base animations as abstract blocks of 40px
+// Example: Walk right is from 6 blocks to 9 blocks.
+// Sample: positions: [x_start, x_end]
+var animationList = {
+  run_right: {
+    obj: rightRunner,
+    positions: [6,9],
+    duration: 325,
+    size: 40
+  },
+  run_left: {
+    obj: leftRunner,
+    positions: [2,5],
+    duration: 200,
+    size: 40
+  }
+};
+```
+
+Now we need to define a way to convert our animation metadata into actions.  We will do this using a method called setupAnimations().  This method will loop through our animationList object and will create new Animator() instances and then will push them onto an array.  Lastly, it will start each animation.
+
+```javascript
+function setupAnimations() {
+
+  var key, animation, animationItem;
+
+  for (key in animationList) {
+    animationItem = animationList[key];
+    animation = new Animator( key, animationItem );
+    animations.push( animation );
+    animation.start();
+  }
+}
+```
+
+The final function we will look at is our Animator() constructor function.  This is where all the magic happens.  This function may look intimidating, however we can break it down to make it more manageable.  The first couple lines are just translating our passed in animation metadata into local variables to work with.  The only exception being the interval variable.  This variable is the calculated interval at which we should switch to a new frame in our animation, based on the total number of frames and the duration.  Think of the interval as frames per millisecond.  Now that we know the interval, once the start method is called, we can start listening for our game loop tick events.  Upon each tick, we will call a step() function to update the animation.  If we have passed our interval threshold, we will update the background position.  Otherwise, we will store the values and wait for the next tick.  If the animation has reached the end frame it will then wrap back to the starting frame to create a continous loop.
+
+```javascript
+var Animator = function( key, item ) {
+
+  // Set x positions.
+  var startX, current, endX, interval, prevTick, totalElapsed, size, obj;
+
+  obj = item.obj[0];
+  size = item.size;
+  
+  startX = current = item.positions[0];
+  endX = item.positions[1];
+
+  interval = Math.floor( item.duration / (endX - startX) );
+  
+  this.start = function() {
+    
+    prevTick = Date.now();
+    totalElapsed = 0;
+
+    doc.on( FRAME_EVENT, this.step, this );
+  };
+
+  this.step = function() {
+    
+    var tick = Date.now(),
+      elapsed = tick - prevTick;
+
+    totalElapsed += elapsed;
+      
+    if ( totalElapsed > interval ) {
+      // Interval is up, change sprite.
+      current++;
+
+      // Are we at the end frame? If so wrap back to the first frame
+      if ( current > endX ) {
+        current = startX;
+      }
+
+      obj.style.backgroundPosition = '-' + current * size + 'px 0';
+      totalElapsed = 0;
+    }
+
+    prevTick = tick;
+  };
+};
+```
+
+Note, this is a very simplistic view of how one could add sprite sheet animations to a game loop.  Normally our Animator() function would have many more methods and would be one component added to a larger core game engine that would be processing and publishing game loop events.
