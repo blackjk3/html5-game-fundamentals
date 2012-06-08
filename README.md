@@ -13,11 +13,12 @@ Jason Kadrmas @itooamaneatguy
     * [Images](#thebasics-img)
     * [CSS](#thebasics-css)
     * [SVG](#thebasics-svg)
+    * [Icon Fonts](#thebasics-icon-fonts)
 * [Game Concepts](#concepts)  
   * [Game Loop](#concepts-gameloop)
       * [requestAnimationFrame](#concepts-raf)
       * [cancelAnimationFrame](#concepts-caf)
-  * [Scale](#concepts-scale)
+  * [Scale - Coming Soon](#concepts-scale)
       * [CSS](#scale-css)
           * [Em's](#scale-ems)
           * [Percentages](#scale-percentages)
@@ -191,7 +192,13 @@ Our buttons were also created and styled entirely in CSS.  The buttons have a su
 Looking at the different CSS code above, the first thing one might notice is that there is quite a bit of repetitiveness for each vendor prefix.   If you are using CSS to style your menu or other game screens, do yourself a favor and use a CSS preprocessor.    There are many excellent preprocessors out there including [SASS]( http://sass-lang.com/), [LESS]( http://lesscss.org/), [Stylus]( http://learnboost.github.com/stylus/), etc.  A preprocessor will easily cut down game development time and will allow your game to become more maintainable as it becomes more complicated. 
 
 ### <a name="thebasics-svg">SVG</a>
-Coming soon
+SVG (Scalable Vector Graphics) is a vector format that allows for scalable graphics that can be resolution independent.  By being resolution independent, SVG will look crisp, even on new retina displays. SVG is expressed in an XML style markup.  The main advantage to using SVG is the ability to scale to any size and not lose quality.  SVG seems like a great solution for scaleable graphics, however one thing to note is that support is lacking in older versions of IE (only 9+, polyfill available) and Android (only 3+).  Android seems to be the biggest dealbreaker since there is no polyfill and only 9% of Android phones are on version 3+.
+
+### <a name="thebasics-icon-fonts">Icon Fonts</a>
+SVG is great, but due to some of those browser compatibility issues a new technique has taken favor for some situations.  This technique is creating fonts that use icons instead of characters.  Think about the old wingdings font and you may have some ideas of how this works.  The nice thing is that icon fonts have the same scalable benefits as SVG, and when added with @font-face they have great browser support.  Check out [icomoon](http://keyamoon.com/icomoon/) where you can even upload an SVG file and create your own icon font.
+
+<img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch01-assets-icon-fonts/icon-font.png"><br>
+Icon font with different icons mapped to unicode values
 
 ## <a name="concepts">Game Concepts</a>
 ### <a name="concepts-gameloop">Game Loop</a>
@@ -615,3 +622,6 @@ var Animator = function( key, item ) {
 ```
 
 Note, this is a very simplistic view of how one could add sprite sheet animations to a game loop.  Normally our Animator() function would have many more methods and would be one component added to a larger core game engine that would be processing and publishing game loop events.
+
+#### <a name="concepts-animation-sprite-sheets-canvas">Canvas</a>
+Now that we have successfully animated DOM sprite sheets, let's see if we can easily translate this to canvas.
