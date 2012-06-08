@@ -22,7 +22,7 @@ Jason Kadrmas @itooamaneatguy
       * [CSS](#scale-css)
           * [Em's](#scale-ems)
           * [Percentages](#scale-percentages)
-    * [Grid System](#scale-grid)
+      * [Grid System](#scale-grid)
   * [Animation](#concepts-animation)  
     * [DOM Animation](#concepts-animation-dom)
         * [CSS Transitions](#concepts-animation-transitions)
