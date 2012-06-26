@@ -1,0 +1,18 @@
+
+canvas {
+  background:#5c94fc; 
+  border: 4px solid #eee
+}
+
+.center {
+  margin: auto;
+}
+
+.field {
+	margin: 0 0 50px 0;
+	width: 200px;
+	text-align: center;
+	float: left;
+	color: #fff;
+	font-size: 1.2em;
+}

@@ -18,11 +18,6 @@ Jason Kadrmas @itooamaneatguy
   * [Game Loop](#concepts-gameloop)
       * [requestAnimationFrame](#concepts-raf)
       * [cancelAnimationFrame](#concepts-caf)
-  * [Scale - Coming Soon](#concepts-scale)
-      * [CSS](#scale-css)
-          * [Em's](#scale-ems)
-          * [Percentages](#scale-percentages)
-      * [Grid System](#scale-grid)
   * [Animation](#concepts-animation)  
     * [DOM Animation](#concepts-animation-dom)
         * [CSS Transitions](#concepts-animation-transitions)
@@ -31,12 +26,18 @@ Jason Kadrmas @itooamaneatguy
     * [Sprite Sheets](#concepts-animation-sprite-sheets)
         * [DOM](#concepts-animation-sprite-sheets-dom)
         * [Canvas](#concepts-animation-sprite-sheets-canvas)
-* [Saving Data](#saving)
-* [WebGL](#webgl) 
-* [PhoneGap](#phonegap)
-* [Automation](#automation)
-* [Debugging](#debugging)
-* [Multiplayer](#multiplayer)
+  * [Collision Detection - Coming Soon](#concepts-collision)
+  * [Scale - Coming Soon](#concepts-scale)
+      * [CSS](#scale-css)
+          * [Em's](#scale-ems)
+          * [Percentages](#scale-percentages)
+      * [Independent Grid System](#scale-grid)
+* [Saving Data - Coming Soon](#saving)
+* [WebGL - Coming Later](#webgl) 
+* [PhoneGap - Coming Later](#phonegap)
+* [Testing / Automation - Coming Way Later](#automation)
+* [Debugging - Contributions Welcome](#debugging)
+* [Multiplayer - Contributions Welcome](#multiplayer)
 
 ## <a name="introduction">Introduction</a>
 Games have always been a part of society, capturing ideas and behaviors of people and becoming an extension of their imagination and creativity.  Dice games, tile games, and card games all date back to ancient times, with dice games dating as far back as 3000 years.  Today's games still spark those same human interactions.  Although the same principles apply to today's games, the medium has changed dramatically. Now days there many options when creating a game. Almost all older games have an online counterpart and due to the popularity of app stores, games have become even easier to market and distribute.  The question then arises, what technology should I use to build my game?
@@ -270,10 +271,6 @@ function cancel() {
 }
 
  ```
-
-
-## <a name="concepts-scale">Scale</a>
-Coming soon.
 
 ## <a name="concepts-animation">Animation</a>
 At the heart of any great game is animation.  Good animation can provide game functionality, polish, and style.  When building an HTML5 game there are many different ways to animate elements.  Often times multiple techniques are employed for different game scenarios.  In this section we will take a look at a few of these techniques and analyze the possible use cases for each.
@@ -624,4 +621,25 @@ var Animator = function( key, item ) {
 Note, this is a very simplistic view of how one could add sprite sheet animations to a game loop.  Normally our Animator() function would have many more methods and would be one component added to a larger core game engine that would be processing and publishing game loop events.
 
 #### <a name="concepts-animation-sprite-sheets-canvas">Canvas</a>
-Now that we have successfully animated DOM sprite sheets, let's see if we can easily translate this to canvas.
+Now that we have successfully animated DOM sprite sheets, let's see if we can translate this to canvas.  The main change when drawing to canvas instead of the DOM is how we will draw our plumber.   With DOM we animated the CSS backgroundPosition property to give the illusion of animation.  With canvas we will use the drawImage function to achieve the same effect.
+
+Previously, we had used the drawImage() method to draw our bee to the canvas.  In this example, we use the 8 parameter version, which allows a portion of an image to be sliced and drawn to a canvas. This turns out to be perfect for sprite sheet animation.  For more info on drawImage check out [MDN](https://developer.mozilla.org/en/Canvas_tutorial/Using_images#Slicing).
+
+```javascript
+// drawImage( img, sourceX, sourceY, sourceW, sourceH, destX, destY, sourceW, sourceH);
+
+context.drawImage(
+  plumber.img,  // the image of the sprite sheet
+  plumber.data.size * plumber.data.current,0,39,39,  // source coordinates      (x,y,w,h)
+  plumber.x, floorY - plumber.data.size,39,39  // destination coordinates (x,y,w,h)
+);
+```
+Drawing our sliced plumber to canvas with drawImage()
+
+Well that was pretty easy.  Seems like we should spice this example up a bit.  To add a bit more functionallity to our plumber we will add some keyboard controls and a lurking enemy.
+
+<a href="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-sprite-sheets-canvas/" target="_blank"><img src="http://client.kadrmasconcepts.com/html5-game-fundamentals/examples/ch02-animation-sprite-sheets-canvas/img/plumber-movin.jpg"></a><br>
+Example: Plumber moving with enemy
+
+Now the first things you may notice are that there is no "jump" functionallity, and there is no collision detection.  Patience, we will get there in future lessons.
+
